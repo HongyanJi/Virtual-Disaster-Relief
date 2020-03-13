@@ -22,7 +22,7 @@ router.get('/home', (req, res, next) => {
     let user = req.session.user;
 
     if(user) {
-        res.render('home', {opp:req.session.opp, name:user.zipcode});
+        res.render('home', {opp:req.session.opp, name:user.username});
         return;
     }
     res.redirect('/');
