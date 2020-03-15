@@ -23,7 +23,7 @@ app.set('view engine', 'pug');
 
 // session
 app.use(session({
-    secret:'youtube_video',
+    secret:'virtual-diaster-relief',
     resave: false,
     saveUninitialized: false,
     cookie: {
