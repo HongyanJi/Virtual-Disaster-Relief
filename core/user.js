@@ -1,5 +1,5 @@
 const pool = require('./connection');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-nodejs'); //const bcrypt = require('bcrypt'); for Hongyan
 
 
 function User() {};

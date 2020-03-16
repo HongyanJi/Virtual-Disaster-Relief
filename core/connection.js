@@ -7,8 +7,9 @@ const pool = mysql.createPool({
     connectionLimit: 10,
     host: 'localhost',
     user: 'root', // change to your mysql username.
-    password: '123456', // change to your mysql password.
-    database: 'virtual_disaster_relief' // change to your mysql database.
+    port: 3307, //Need to add port for Dele's to work, feel free to comment out
+    password: '', // change to your mysql password.
+    database: 'virtual_distaster_relief' // change to your mysql database.
 });
 
 pool.getConnection((err, connection) => {
