@@ -1,5 +1,5 @@
-# Login-Register-Nodejs
-A simple Login/Register application developed in Nodejs using Express.
+# Virtual-Disaster-Relief-Nodejs
+A virtual disaster relief application developed in Nodejs using Express, MySql, Bootstrap.
 
 # Getting started
 
@@ -7,11 +7,6 @@ Unzip the downloaded file.
 
 ### Installing dependencies:
 Enter this command it will install all the dependencies at once:
-
-```
-npm install
-```
-Or you can install them individually:
 
 ```
 npm install express express-session mysql pug-cli bcrypt util.promisify
