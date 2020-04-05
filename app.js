@@ -23,7 +23,7 @@ app.set('view engine', 'pug');
 
 // session
 app.use(session({
-    secret:'virtual-diaster-relief',
+    secret:'virtual_diaster_relief',
     resave: false,
     saveUninitialized: false,
     cookie: {

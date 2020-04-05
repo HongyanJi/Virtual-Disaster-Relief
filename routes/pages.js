@@ -1,6 +1,12 @@
 const express = require('express');
 const User = require('../core/user');
 const router = express.Router();
+const path = require('path');
+const auth = require('http-auth');
+
+const basic = auth.basic({
+    file: path.join(__dirname, '../routes/admin.htpasswd'),
+});
 
 // create an object from the class User in the file core/user.js
 const user = new User();
@@ -17,6 +23,12 @@ router.get('/', (req, res, next) => {
     res.render('index', {title:"Virtual Disaster Relief"});
 })
 
+//Router.post('/admin-register', basic.check(function(req, res) {
+//    res.render('admin-register', { title: 'Registration' });
+//    return;
+//  res.redirect('/');
+//}));
+
 // Get home page
 router.get('/home', (req, res, next) => {
     let user = req.session.user;
@@ -32,7 +44,9 @@ router.get('/home', (req, res, next) => {
 router.post('/login', (req, res, next) => {
     // The data sent from the user are stored in the req.body object.
     // call our login function and it will return the result(the user data).
+
     user.login(req.body.username, req.body.password, function(result) {
+     console.log(req.body.username + "  " + req.body.password);
         if(result) {
             // Store the user data in a session.
             req.session.user = result;
@@ -75,6 +89,15 @@ router.post('/register', (req, res, next) => {
 
 });
 
+// Post admin data
+router.get('/admin', basic.check((req, res, next) => {  
+console.log("getting here");
+    if(req.session.user) {
+    
+        res.redirect('/');
+
+    }
+}));
 
 // Get loggout page
 router.get('/loggout', (req, res, next) => {
