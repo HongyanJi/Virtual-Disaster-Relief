@@ -94,7 +94,7 @@ router.get('/admin', basic.check((req, res, next) => {
 console.log("getting here");
     if(req.session.user) {
     
-        res.redirect('/');
+        res.redirect('/home');
 
     }
 }));
