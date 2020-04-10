@@ -9,7 +9,7 @@ Unzip the downloaded file.
 Enter this command it will install all the dependencies at once:
 
 ```
-npm install express express-session mysql pug-cli bcrypt util.promisify
+npm install express express-session mysql pug-cli bcrypt util.promisify http-auth
 ```
 
 Sometimes you get errors and access denied add sudo to the command
