@@ -1,5 +1,4 @@
 
-const pool = require('./connection');
 const bcrypt = require('bcrypt'); 
 const mysqlConnection = require('./connection');
 
