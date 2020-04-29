@@ -56,6 +56,30 @@ User.prototype = {
         });
     },
 
+    createRequest : function(body, callback) 
+    {
+
+       
+        // call the query give it the sql string and the values (ciphertext array)
+        // this array will contain the values of the fields.
+        var ciphertext = [];
+        // loop in the attributes of the object and push the values into the ciphertext array.
+        for(prop in body){
+            ciphertext.push(body[prop]);
+        }
+        
+        // prepare the sql query
+        let sql = 'INSERT INTO request(username, title, totalAmount, amount, totalVolunteers, volunteers, reason, message) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        // call the query give it the sql string and the values (ciphertext array)
+        mysqlConnection.query(sql, ciphertext, function(err, result) {
+
+            if(err) throw err;
+            // return the last inserted id. if there is no error
+        
+            callback(result.insertId);
+        });
+    },
+
     login : function(username, password, callback)
     {
         // find the user data by his username.

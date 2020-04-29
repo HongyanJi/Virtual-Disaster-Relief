@@ -1,0 +1,45 @@
+extends layout
+
+mixin message(opp, name)
+    if(opp)
+        h1.greeting Make a request
+    else 
+        h1.greeting Welcome 
+            span=name 
+            |  to our website
+
+append links 
+    li(style="float: right;")
+        a(href="/loggout") Loggout 
+    
+block content
+    .dashboard 
+        .user 
+            +message(opp, name)
+
+    form(method="post" action="/request")
+        table 
+            tr
+                td Name: 
+                td 
+                    input(type="text" name="title")
+            tr
+                td Amount: 
+                td 
+                    input(type="text" name="amount")
+            tr 
+                td Number of Volunteers:
+                td 
+                    input(type="text" name="volunteers")
+            tr 
+                td Reason:
+                td 
+                    input(type="text" name="reason")
+            tr 
+                td Message: 
+                td 
+                    input(type="text" name="message")
+            tr 
+                td
+                td
+                    input(type="submit" value="Request")

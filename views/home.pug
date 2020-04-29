@@ -19,3 +19,17 @@ block content
     .dashboard 
         .user 
             +message(opp, name)
+
+    table 
+    form(method="post" action="/request")
+            tr
+                td 
+                    input(type="submit" value="Request ")
+    form(method="post" action="/donate")
+            tr 
+                td 
+                    input(type="submit" value=" Donate ")
+    form(method="post" action="/notifications")
+            tr 
+                td
+                    input(type="submit" value="Notifications")
