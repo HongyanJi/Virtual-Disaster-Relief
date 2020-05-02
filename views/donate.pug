@@ -2,7 +2,7 @@ extends layout
 
 mixin message(opp, name)
     if(opp)
-        h1.greeting Make a request
+        h1.greeting Make a donate
     else 
         h1.greeting Welcome 
             span=name 
@@ -17,7 +17,7 @@ block content
         .user 
             +message(opp, name)
 
-    form(method="post" action="/request")
+    form(method="post" action="/donated")
         table 
             tr
                 td Name: 
@@ -42,4 +42,4 @@ block content
             tr 
                 td
                 td
-                    input(type="submit" value="Request")
+                    input(type="submit" value="Donate")
