@@ -92,7 +92,7 @@ User.prototype = {
         }
         
         // prepare the sql query
-        let sql = 'INSERT INTO request(username, title, totalAmount, amount, totalVolunteers, volunteers, reason, message) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        let sql = 'INSERT INTO donate(username, title, totalAmount, amount, totalVolunteers, volunteers, reason, message) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
         // call the query give it the sql string and the values (ciphertext array)
         mysqlConnection.query(sql, ciphertext, function(err, result) {
 
