@@ -1,12 +1,7 @@
 extends layout
 
 mixin message(opp, name)
-    if(opp)
-        h1.greeting Make a donate
-    else 
-        h1.greeting Welcome 
-            span=name 
-            |  to our website
+        h1.greeting Make a pledge
 
 append links 
     li(style="float: right;")
@@ -16,19 +11,6 @@ block content
     .dashboard 
         .user 
             +message(opp, name)
-
-    form(method="post" action="/registration")
-        if registrations.length
-            table
-                tr
-                th Username:
-                th Email:
-                each registration in registrations
-                tr
-                    td = registrations.username
-                    td = registrations.email
-        else
-            p No registrations at the moment
     form(method="post" action="/donated")
         table 
             tr
