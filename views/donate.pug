@@ -2,7 +2,7 @@ extends layout
 
 mixin message(opp, name)
     if(opp)
-        h1.greeting Make a request
+        h1.greeting Make a donate
     else 
         h1.greeting Welcome 
             span=name 
@@ -29,3 +29,29 @@ block content
                     td = registrations.email
         else
             p No registrations at the moment
+    form(method="post" action="/donated")
+        table 
+            tr
+                td Name: 
+                td 
+                    input(type="text" name="title")
+            tr
+                td Amount: 
+                td 
+                    input(type="text" name="amount")
+            tr 
+                td Number of Volunteers:
+                td 
+                    input(type="text" name="volunteers")
+            tr 
+                td Reason:
+                td 
+                    input(type="text" name="reason")
+            tr 
+                td Message: 
+                td 
+                    input(type="text" name="message")
+            tr 
+                td
+                td
+                    input(type="submit" value="Donate")

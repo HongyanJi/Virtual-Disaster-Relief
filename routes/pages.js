@@ -75,6 +75,27 @@ router.get('/requestview', (req, res, next) => {
     res.redirect('/');
 });
 */
+// Get donate page
+router.get('/donate', (req, res, next) => {
+    let user = req.session.user;
+
+    if(user) {
+        res.render('donate', {opp:req.session.opp, name:user.username});
+        return;
+    }
+    res.redirect('/');
+});
+
+// Get requestSent page
+router.get('/donateSent', (req, res, next) => {
+    let user = req.session.user;
+
+    if(user) {
+        res.render('donateSent', {opp:req.session.opp, name:user.username});
+        return;
+    }
+    res.redirect('/');
+});
 
 // Post login data
 router.post('/login', (req, res, next) => {
@@ -165,6 +186,25 @@ router.post('/requestdelete', (req, res, next) => {
     }
 });
 
+// Post donate data
+router.post('/donate', (req, res, next) => {
+    let user = req.session.user;
+    if(user) {
+        res.render('donate', {opp:req.session.opp, name:user.username});
+        return;
+    }
+    res.redirect('/');
+});
+
+// Post donate sent page
+router.post('/donateSent', (req, res, next) => {
+    let user = req.session.user;
+    if(user) {
+        res.render('home', {opp:req.session.opp, name:user.username});
+        return;
+    }
+    res.redirect('/');
+});
 
 // Post register data
 router.post('/register', (req, res, next) => {
@@ -193,7 +233,7 @@ router.post('/register', (req, res, next) => {
 
 });
 
-// Post register data
+// Post request data
 router.post('/requested', (req, res, next) => {
     // prepare an object containing all user inputs.
     let users = req.session.user;
@@ -220,6 +260,69 @@ router.post('/requested', (req, res, next) => {
                 req.session.user = result;
                 req.session.opp = 0;
                 res.redirect('/requestSent');
+            });
+
+        }else {
+            console.log('Error creating a new user ...');
+        }
+    });
+
+});
+
+// Post donate data
+router.post('/donate', (req, res, next) => {
+    // prepare an object containing all user inputs.
+    let userInput = {
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email,
+        zipcode: req.body.zipcode
+    };
+    // call create function. to create a new user. if there is no error this function will return it's id.
+    user.create(userInput, function(lastId) {
+        // if the creation of the user goes well we should get an integer (id of the inserted user)
+        if(lastId) {
+            // Get the user data by it's id. and store it in a session.
+            user.find(lastId, function(result) {
+                req.session.user = result;
+                req.session.opp = 0;
+                res.redirect('/home');
+            });
+    
+        }else {
+            console.log('Error creating a new user ...');
+        }
+    });
+
+});
+
+// Post register data
+router.post('/donated', (req, res, next) => {
+    // prepare an object containing all user inputs.
+    let users = req.session.user;
+
+        let userInput = {
+            username: users.username,
+            title: req.body.title,
+            totalAmount: req.body.amount,
+            amount: req.body.amount,
+            totalVolunteers: req.body.volunteers,
+            volunteers: req.body.volunteers,
+            reason: req.body.reason,
+            message: req.body.message
+        };
+    
+    console.log(users.username)
+    // call create function. to create a new user. if there is no error this function will return it's id.
+    user.createDonate(userInput, function(lastId) {
+        // if the creation of the user goes well we should get an integer (id of the inserted user)
+        console.log(lastId)
+        if(lastId) {
+            // Get the user data by it's id. and store it in a session.
+            user.find(lastId, function(result) {
+                req.session.user = result;
+                req.session.opp = 0;
+                res.redirect('/donateSent');
             });
 
 
