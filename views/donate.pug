@@ -17,29 +17,15 @@ block content
         .user 
             +message(opp, name)
 
-    form(method="post" action="/request")
-        table 
-            tr
-                td Name: 
-                td 
-                    input(type="text" name="title")
-            tr
-                td Amount: 
-                td 
-                    input(type="text" name="amount")
-            tr 
-                td Number of Volunteers:
-                td 
-                    input(type="text" name="volunteers")
-            tr 
-                td Reason:
-                td 
-                    input(type="text" name="reason")
-            tr 
-                td Message: 
-                td 
-                    input(type="text" name="message")
-            tr 
-                td
-                td
-                    input(type="submit" value="Request")
+    form(method="post" action="/registration")
+        if registrations.length
+            table
+                tr
+                th Username:
+                th Email:
+                each registration in registrations
+                tr
+                    td = registrations.username
+                    td = registrations.email
+        else
+            p No registrations at the moment

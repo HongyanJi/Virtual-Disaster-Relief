@@ -8,7 +8,7 @@ User.prototype = {
     // Find the user data by id or username.
     find : function(user = null, callback)
     {
-        // if the user variable is defind
+        // if the user variable is defined
         if(user) {
             // if user = number return field = id, if user = string return field = username.
             var field = Number.isInteger(user) ? 'id' : 'username';
@@ -25,6 +25,55 @@ User.prototype = {
             }else {
                 callback(null);
             }
+        });
+    },
+
+    // Find the user data by id or username.
+    viewRequest : function(user = null, callback)
+    {
+    
+        // if the user variable is defined
+        if(user) {
+            // if user = number return field = id, if user = string return field = username.
+            var field = Number.isInteger(user) ? 'id' : 'username';
+        }
+
+        // prepare the sql query
+        let sql = `SELECT * FROM request WHERE username = ?`;
+
+
+        mysqlConnection.query(sql, user, function(err, result) {
+            if(err) throw err
+
+            if(result.length) {
+                callback(result);
+            }else {
+                callback(null);
+            }
+
+           
+        });
+    },
+
+    // Find the user data by id or username.
+    deleteRequest : function(user = null)
+    {
+    
+        // if the user variable is defined
+        if(user) {
+            // if user = number return field = id, if user = string return field = username.
+            var field = Number.isInteger(user) ? 'id' : 'username';
+        }
+
+        // prepare the sql query
+        let sql = `DELETE FROM request WHERE id = ?`;
+
+
+        mysqlConnection.query(sql, user.id, function(err, result) {
+            if(err) throw err
+
+            console.log("Number of records deleted: " + result.affectedRows);
+           
         });
     },
 

@@ -31,6 +31,13 @@ app.use(session({
     }
 }));
 
+app.connect(function(err) {
+    if (err) throw err;
+    app.query("SELECT * FROM users ORDER BY username", function (err, result) {
+      if (err) throw err;
+      console.log(result);
+    });
+  });
 
 // Routers
 app.use('/', pageRouter);

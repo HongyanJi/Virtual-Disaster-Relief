@@ -4,6 +4,7 @@ const router = express.Router();
 const path = require('path');
 const auth = require('http-auth');
 
+
 const basic = auth.basic({
     file: path.join(__dirname, '../routes/admin.htpasswd'),
 });
@@ -62,6 +63,19 @@ router.get('/requestSent', (req, res, next) => {
     res.redirect('/');
 });
 
+/*
+// Get requestview page
+router.get('/requestview', (req, res, next) => {
+    let user = req.session.user;
+    if(user) {
+        user.viewRequest(user, function(result) {
+            res.render('requestview', {title: 'Requests', requests: result})
+        });
+    }
+    res.redirect('/');
+});
+*/
+
 // Post login data
 router.post('/login', (req, res, next) => {
     // The data sent from the user are stored in the req.body object.
@@ -83,6 +97,17 @@ router.post('/login', (req, res, next) => {
 
 });
 
+// Get home page
+router.post('/done', (req, res, next) => {
+    let user = req.session.user;
+
+    if(user) {
+        res.render('home', {opp:req.session.opp, name:user.username});
+        return;
+    }
+    res.redirect('/');
+});
+
 // Post request data
 router.post('/request', (req, res, next) => {
     let user = req.session.user;
@@ -101,6 +126,43 @@ router.post('/requestSent', (req, res, next) => {
         return;
     }
     res.redirect('/');
+});
+
+// Post request sent page
+router.post('/requestview', (req, res, next) => {
+    let users = req.session.user;
+    
+    if(user) {
+       
+        user.viewRequest(users.username, function(result) {
+        
+            res.render('requestview', {title: 'Requests', requests: result})
+        });
+    }
+});
+
+// Post request sent page
+router.post('/requestdelete', (req, res, next) => {
+    let users = req.session.user;
+    
+    console.log(parseInt(req.body.Delete))
+    let idData = parseInt(req.body.Delete)
+
+    let userInput = {
+        id: req.body.Delete
+    };
+
+
+    if(user) {
+       
+        user.deleteRequest(userInput, function(result) {      
+        });
+
+        user.viewRequest(users.username, function(result) {
+        
+            res.render('home');
+        });
+    }
 });
 
 

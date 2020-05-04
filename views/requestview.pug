@@ -1,0 +1,38 @@
+extends layout
+
+
+mixin message(opp, name)
+    h1.greeting Requests
+    
+
+append links 
+    li(style="float: right;")
+        a(href="/loggout") Loggout 
+
+block content
+    .dashboard 
+        .user 
+            +message(opp, name)
+        if requests.length
+            form(method="post" action="/requestDelete")
+                table.listing-table.table-dark.table-striped
+                    tr
+                        th ID:
+                        th Username:
+                        th Title:
+                        th Amount:
+                        th Volunteers:
+                        th Reason:
+                    each request in requests
+                        tr
+                            td= request.id
+                            td= request.username
+                            td= request.title
+                            td= request.totalAmount
+                            td= request.totalVolunteers
+                            td= request.reason  
+                            td
+                            td  
+                                input(class="btn btn-small", name= "Delete" type="submit" value= request.id, onclick='deleteRequest("#{request.id}")')      
+        else
+            p You have no requests currently
