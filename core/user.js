@@ -55,6 +55,32 @@ User.prototype = {
         });
     },
 
+    requests : function(user = null, callback)
+    {
+    
+        // if the user variable is defined
+        if(user) {
+            // if user = number return field = id, if user = string return field = username.
+            var field = Number.isInteger(user) ? 'id' : 'username';
+        }
+
+        // prepare the sql query
+        let sql = `SELECT * FROM request WHERE NOT username = ?`;
+
+
+        mysqlConnection.query(sql, user, function(err, result) {
+            if(err) throw err
+
+            if(result.length) {
+                callback(result);
+            }else {
+                callback(null);
+            }
+
+           
+        });
+    },
+
     // Find the user data by id or username.
     deleteRequest : function(user = null)
     {

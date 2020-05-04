@@ -63,18 +63,7 @@ router.get('/requestSent', (req, res, next) => {
     res.redirect('/');
 });
 
-/*
-// Get requestview page
-router.get('/requestview', (req, res, next) => {
-    let user = req.session.user;
-    if(user) {
-        user.viewRequest(user, function(result) {
-            res.render('requestview', {title: 'Requests', requests: result})
-        });
-    }
-    res.redirect('/');
-});
-*/
+
 // Get donate page
 router.get('/donate', (req, res, next) => {
     let user = req.session.user;
@@ -161,6 +150,20 @@ router.post('/requestview', (req, res, next) => {
         });
     }
 });
+
+// Post request sent page
+router.post('/response', (req, res, next) => {
+    let users = req.session.user;
+    
+    if(user) {
+       
+        user.requests(users.username, function(result) {
+        
+            res.render('response', {title: 'Requests', requests: result})
+        });
+    }
+});
+
 
 // Post request sent page
 router.post('/requestdelete', (req, res, next) => {
