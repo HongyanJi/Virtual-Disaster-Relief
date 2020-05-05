@@ -2,9 +2,9 @@ extends layout
 
 mixin message(opp, name)
     if(opp)
-        h1.greeting Your donation has been sent.
+        h1.greeting The sender and reciever have been matched
     else 
-        h1.greeting Your donation has been sent.
+        h1.greeting The sender and reciever have been matched
 
 append links 
     li(style="float: right;")
@@ -15,7 +15,7 @@ block content
         .user 
             +message(opp, name)
 
-    form(method="post" action="/donationSent")
+    form(method="post" action="/done")
         table 
             tr 
                 td

@@ -430,11 +430,10 @@ router.post('/donated', (req, res, next) => {
             message: req.body.message
         };
     
-    console.log(users.username)
     // call create function. to create a new user. if there is no error this function will return it's id.
     user.createDonate(userInput, function(lastId) {
         // if the creation of the user goes well we should get an integer (id of the inserted user)
-        console.log(lastId)
+
         if(lastId) {
             // Get the user data by it's id. and store it in a session.
             user.find(lastId, function(result) {
@@ -454,10 +453,74 @@ router.post('/donated', (req, res, next) => {
 
 // Post admin data
 router.get('/admin', basic.check((req, res, next) => {  
-console.log("getting here");
+    let users = req.session.user;
+
     if(req.session.user) {
+
+        user.potentialRequest(users.username, function(result) {
+            user.showPledge(users.username, function(result1) {
+                console.log(result1)
+                console.log(result)
+                res.render('admin', {title: 'Match', requests: result, pledges: result1}, )
+            });
+        });
+
+    }
+}));
+
+
+// Post admin data
+router.post('/match', basic.check((req, res, next) => {  
+    let users = req.session.user;
     
-        res.redirect('/home');
+    if(users) {
+        user.showRequest(req.body.request, function(result) {
+            user.potentialPledge(req.body.pledge, function(result1) {
+                rID = result[0].id;
+                rAmount = result[0].amount - result1[0].amount;
+                rVol = result[0].volunteers - result1[0].volunteers;
+
+                let notify = {
+                    sender: result1[0].username,
+                    reciever: result[0].username,
+                    requestid: rID,
+                    completed: 0,
+                    message: result[0].message
+                };
+    
+                user.deletePledge(result1[0].id)
+
+                if(rAmount <= 0 && rVol <= 0){
+                    user.deleteRequest(rID)
+                    user.createNotification(notify, function(result) {
+                    });
+                    notify.completed = 1;
+                    user.createNotification(notify, function(result) {
+                    });
+                }else if(rAmount <= 0){
+                    user.createNotification(notify, function(result) {
+                    });
+                    user.updateRequest(0, rVol, rID, function(result) {
+    
+                    });
+                }else if(rVol <= 0){
+                    user.createNotification(notify, function(result) {
+                    });
+                    user.updateRequest(rAmount, 0, rID, function(result) {
+                    });
+                }else{
+                    user.createNotification(notify, function(result) {
+                    });
+                    user.updateRequest(rAmount, rVol, rID, function(result) {
+    
+                    });
+                }
+    
+                res.render('matched')
+            });
+        });
+
+
 
     }
 }));

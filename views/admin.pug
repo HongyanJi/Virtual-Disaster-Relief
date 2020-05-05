@@ -1,0 +1,65 @@
+extends layout
+
+
+mixin message(opp, name)
+    h1.greeting Match Requests and Donations
+    
+
+append links 
+    li(style="float: right;")
+        a(href="/loggout") Logout 
+
+block content
+    .dashboard 
+        .user 
+            +message(opp, name)
+        if requests.length && pledges.length
+            form(method="post" action="/match")
+                table
+                    tr
+                        td Request ID#:
+                        td 
+                            input(type="text" name="request")
+                     
+                        td Pledge ID#:
+                        td 
+                            input(type="text" name="pledge")
+                     
+                        td
+                        td
+                            input(type="submit" value="Match")
+                table.listing-table.table-dark.table-striped
+                    tr Requests:
+                        th ID:
+                        th Username:
+                        th Title:
+                        th Amount:
+                        th Volunteers:
+                        th Reason:
+                    each request in requests
+                        tr
+                            td= request.id
+                            td= request.username
+                            td= request.title
+                            td= request.totalAmount
+                            td= request.totalVolunteers
+                            td= request.reason 
+
+                table.listing-table.table-dark.table-striped
+                    tr Pledges:
+                        th ID:
+                        th Username:
+                        th Title:
+                        th Amount:
+                        th Volunteers:
+                        th Reason:
+                    each pledge in pledges
+                        tr
+                            td= pledge.id
+                            td= pledge.username
+                            td= pledge.title
+                            td= pledge.totalAmount
+                            td= pledge.totalVolunteers
+                            td= pledge.reason 
+        else
+            p There are not enough requests/pledges to match currently

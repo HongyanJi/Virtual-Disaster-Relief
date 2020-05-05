@@ -50,6 +50,59 @@ User.prototype = {
            
         });
     },
+
+    // Find the user data by id or username.
+    potentialRequest : function(user = null, callback)
+    {
+    
+        // if the user variable is defined
+        if(user) {
+            // if user = number return field = id, if user = string return field = username.
+            var field = Number.isInteger(user) ? 'id' : 'username';
+        }
+
+        console.log(user);
+        // prepare the sql query
+        let sql = `SELECT * FROM request WHERE NOT username = ?`;
+
+
+        mysqlConnection.query(sql, user, function(err, result) {
+            if(err) throw err
+
+            if(result.length) {
+                callback(result);
+            }else {
+                callback(null);
+            }
+
+           
+        });
+    },
+
+    // Find the user data by id or username.
+    showPledge : function(user = null, callback)
+    {
+
+        console.log(user);
+        // prepare the sql query
+        let sql = `SELECT * FROM donate WHERE NOT username = ?`;
+
+        console.log("begins here")
+        console.log(user)
+        console.log("SQL:")
+        console.log(sql)
+        mysqlConnection.query(sql, user, function(err, result1) {
+            if(err) throw err
+
+            if(result1.length) {
+                callback(result1);
+            }else {
+                callback(null);
+            }
+
+           
+        });
+    },
     
     // Find the user data by id or username.
     viewRequest : function(user = null, callback)
@@ -80,6 +133,33 @@ User.prototype = {
     },
 
     // Find the user data by id or username.
+    potentialPledge : function(user = null, callback)
+    {
+    
+        // if the user variable is defined
+        if(user) {
+            // if user = number return field = id, if user = string return field = username.
+            var field = Number.isInteger(user) ? 'id' : 'username';
+        }
+
+        // prepare the sql query
+        let sql = `SELECT * FROM donate WHERE id = ?`;
+
+
+        mysqlConnection.query(sql, user, function(err, result1) {
+            if(err) throw err
+
+            if(result1.length) {
+                callback(result1);
+            }else {
+                callback(null);
+            }
+
+           
+        });
+    },
+
+    // Find the user data by id or username.
     showRequest : function(user = null, callback)
     {
     
@@ -89,7 +169,6 @@ User.prototype = {
             var field = Number.isInteger(user) ? 'id' : 'username';
         }
 
-        console.log(user);
         // prepare the sql query
         let sql = `SELECT * FROM request WHERE id = ?`;
 
@@ -148,6 +227,28 @@ User.prototype = {
 
 
         mysqlConnection.query(sql, user.id, function(err, result) {
+            if(err) throw err
+
+            console.log("Number of records deleted: " + result.affectedRows);
+           
+        });
+    },
+
+    // Find the user data by id or username.
+    deletePledge : function(user = null)
+    {
+    
+        // if the user variable is defined
+        if(user) {
+            // if user = number return field = id, if user = string return field = username.
+            var field = Number.isInteger(user) ? 'id' : 'username';
+        }
+
+        // prepare the sql query
+        let sql = `DELETE FROM donate WHERE id = ?`;
+
+
+        mysqlConnection.query(sql, user, function(err, result) {
             if(err) throw err
 
             console.log("Number of records deleted: " + result.affectedRows);

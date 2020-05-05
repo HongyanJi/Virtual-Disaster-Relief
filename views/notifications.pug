@@ -14,7 +14,7 @@ block content
         .user 
             +message(opp, name)
         if messages.length
-            form(method="post" action="/requestDelete")
+            form(method="post" action="/done")
                 table.listing-table.table-dark.table-striped
                     each message in messages
                         tr
@@ -24,6 +24,9 @@ block content
                             td= "You have recieved a donation from " + message.sender + " with the message '" + message.message + "'."   
                             tr
                                 td= "You request " + message.requestid + " has been completed."
-        
+                    tr 
+                        td
+                        td
+                            input(type="submit" value="Back")
         else 
             p You have no notifications currently
