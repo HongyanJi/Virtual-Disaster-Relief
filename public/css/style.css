@@ -7,18 +7,18 @@ body
 .table, .table td, .table tr
 {
     border-collapse: collapse;
-    border: 1px solid #ccc;
+    border: 100px solid #ccc;
     padding: 10px;
 }
 .table
 {
-    background-color: #fff;
+    background-color: rgb(255, 255, 255);
 }
 nav
 {
     background-color: #fff;
-    border: 1px solid #ccc;
-    margin-bottom: 5px;
+    border: 10px solid rgb(160, 213, 238);
+    margin-bottom: 30px;
 }
 nav ul
 {
@@ -32,9 +32,9 @@ nav ul li
 nav ul li a 
 {
     display: inline-block;
-    text-decoration: none;
-    color: #444;
-    padding: 8px 20px;
+    text-decoration: solid underline purple 100px;
+    color: rgb(94, 110, 250);
+    padding: 20px 20px;
 }
 nav ul li a:hover
 {
@@ -42,9 +42,9 @@ nav ul li a:hover
 }
 .page-wrapper
 {
-    width: 960px;
+    width: 1100px;
     margin: 0 auto;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .login-panel, .register-panel
@@ -68,7 +68,7 @@ nav ul li a:hover
 }
 .image
 {
-    margin-bottom: 20px;
+    margin-bottom: 200px;
 }
 .join-us-img
 {    
@@ -79,18 +79,18 @@ input[type="text"], input[type="password"], input[type="email"], input[type="zip
     padding: 8px 5px;
     margin: 0 0 5px 5px;
     min-width: 270px;
-    font-size: 1.05em;
+    font-size: 1.25em;
     background-color: #F5F5F5;
     border: 1px solid #ccc;
 }
 input[type="submit"]
 {
-    float: right;
+    float: none;
     padding: 7px 20px;
-    font-size: 1.06em;
+    font-size: 1.25em;
     background-color: #07cf61;
-    color: #fff;
-    border: 1px solid #02b128;
+    color: rgb(5, 5, 5);
+    border: 1px hidden #02b128;
     cursor: pointer;
     margin-top: 4px;
 }
@@ -100,7 +100,7 @@ input[type="text"]:focus , input[type="password"]:focus, input[type="email"]:foc
 
 input[type="submit"]:hover
 {
-    background-color: #0fbedd;
+    background-color: #fee86b;
     border-color: 1px solid #09b6c2;
 }
 .error
