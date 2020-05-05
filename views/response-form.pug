@@ -1,7 +1,7 @@
 extends layout
 
 mixin message(opp, name)
-        h1.greeting Make a Pledge
+        h1.greeting Make a Donation
 
 append links 
     li(style="float: right;")
@@ -11,7 +11,7 @@ block content
     .dashboard 
         .user 
             +message(opp, name)
-    form(method="post" action="/donated")
+    form(method="post" action="/responded")
         table 
             tr
                 td Name: 
@@ -36,4 +36,4 @@ block content
             tr 
                 td
                 td
-                    input(type="submit" value="Pledge")
+                    input(type="submit" value="Donate")

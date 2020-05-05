@@ -29,6 +29,29 @@ User.prototype = {
     },
 
     // Find the user data by id or username.
+    viewNotifications : function(user = null, callback)
+    {
+
+
+        console.log(user);
+        // prepare the sql query
+        let sql = `SELECT * FROM notifications WHERE reciever = ?`;
+
+
+        mysqlConnection.query(sql, user, function(err, result) {
+            if(err) throw err
+
+            if(result.length) {
+                callback(result);
+            }else {
+                callback(null);
+            }
+
+           
+        });
+    },
+    
+    // Find the user data by id or username.
     viewRequest : function(user = null, callback)
     {
     
@@ -38,8 +61,37 @@ User.prototype = {
             var field = Number.isInteger(user) ? 'id' : 'username';
         }
 
+        console.log(user);
         // prepare the sql query
         let sql = `SELECT * FROM request WHERE username = ?`;
+
+
+        mysqlConnection.query(sql, user, function(err, result) {
+            if(err) throw err
+
+            if(result.length) {
+                callback(result);
+            }else {
+                callback(null);
+            }
+
+           
+        });
+    },
+
+    // Find the user data by id or username.
+    showRequest : function(user = null, callback)
+    {
+    
+        // if the user variable is defined
+        if(user) {
+            // if user = number return field = id, if user = string return field = username.
+            var field = Number.isInteger(user) ? 'id' : 'username';
+        }
+
+        console.log(user);
+        // prepare the sql query
+        let sql = `SELECT * FROM request WHERE id = ?`;
 
 
         mysqlConnection.query(sql, user, function(err, result) {
@@ -100,6 +152,49 @@ User.prototype = {
 
             console.log("Number of records deleted: " + result.affectedRows);
            
+        });
+    },
+
+    // Find the user data by id or username.
+    updateRequest : function(rAmount, rVol, rID, callback)
+    {
+    
+      
+        // prepare the sql query
+       // let sql = "UPDATE request SET(amount, volunteers) VALUES (?, ?) WHERE id = " + rID;
+        let sql = "UPDATE request SET amount = " + rAmount + ", volunteers = " + rVol + " WHERE id = " + rID;
+        // call the query give it the sql string and the values (ciphertext array)
+        mysqlConnection.query(sql, function(err, result) {
+
+            if(err) throw err;
+            // return the last inserted id. if there is no error
+            console.log("Number of records updated: " + result.affectedRows);
+            
+        });
+        
+        
+        //let sql = `UPDATE request SET amount = ? WHERE id = 2`;
+
+    },
+
+    createNotification : function(body, callback) 
+    {
+
+        // this array will contain the values of the fields.
+        var ciphertext = [];
+        // loop in the attributes of the object and push the values into the ciphertext array.
+        for(prop in body){
+            ciphertext.push(body[prop]);
+        }
+        // prepare the sql query
+        let sql = "INSERT INTO notifications(sender, reciever, requestid, completed, message) VALUES (?, ?, ?, ?, ?)";
+        // call the query give it the sql string and the values (ciphertext array)
+        mysqlConnection.query(sql, ciphertext, function(err, result) {
+
+            if(err) throw err;
+            // return the last inserted id. if there is no error
+        
+            callback(result);
         });
     },
 

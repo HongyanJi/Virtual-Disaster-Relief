@@ -3,6 +3,11 @@ const User = require('../core/user');
 const router = express.Router();
 const path = require('path');
 const auth = require('http-auth');
+let rID;
+let gAmount;
+let gVol;
+let rAmount;
+let rVol;
 
 
 const basic = auth.basic({
@@ -60,7 +65,18 @@ router.get('/requestSent', (req, res, next) => {
         res.render('requestSent', {opp:req.session.opp, name:user.username});
         return;
     }
-    res.redirect('/');
+    //res.redirect('/');
+});
+
+// Get requestSent page
+router.get('/donationSent', (req, res, next) => {
+    let user = req.session.user;
+
+    if(user) {
+        res.render('donationSent', {opp:req.session.opp, name:user.username});
+        return;
+    }
+    //res.redirect('/');
 });
 
 
@@ -128,6 +144,16 @@ router.post('/request', (req, res, next) => {
     res.redirect('/');
 });
 
+// Post donation sent page
+router.post('/donationSent', (req, res, next) => {
+    let user = req.session.user;
+    if(user) {
+        res.render('home', {opp:req.session.opp, name:user.username});
+        return;
+    }
+    res.redirect('/');
+});
+
 // Post request sent page
 router.post('/requestSent', (req, res, next) => {
     let user = req.session.user;
@@ -151,6 +177,20 @@ router.post('/requestview', (req, res, next) => {
     }
 });
 
+// Post notifications page
+router.post('/notifications', (req, res, next) => {
+    let users = req.session.user;
+    
+    if(user) {
+       
+        user.viewNotifications(users.username, function(result) {
+        
+            res.render('notifications', {title: 'Notifications', messages: result})
+        });
+    }
+});
+
+
 // Post request sent page
 router.post('/response', (req, res, next) => {
     let users = req.session.user;
@@ -163,7 +203,6 @@ router.post('/response', (req, res, next) => {
         });
     }
 });
-
 
 // Post request sent page
 router.post('/requestdelete', (req, res, next) => {
@@ -209,6 +248,82 @@ router.post('/donateSent', (req, res, next) => {
     res.redirect('/');
 });
 
+// Post make donation page
+router.post('/makedonation', (req, res, next) => {
+    let user = req.session.user;
+    rID = req.body.Select;
+    if(user) {
+        res.render('response-form', {opp:req.session.opp, name:user.username});
+        return;
+    }
+    res.redirect('/');
+});
+
+// Post make donation page
+router.post('/responded', (req, res, next) => {
+    let users = req.session.user;
+
+    let userInput = {
+        username: users.username,
+        title: req.body.title,
+        amount: req.body.amount,
+        volunteers: req.body.volunteers,
+        reason: req.body.reason,
+        message: req.body.message
+    };
+
+    gAmount = req.body.amount;
+    gVol = req.body.volunteers;
+    if(user) {
+        console.log(rID)
+        user.showRequest(rID, function(result) {  
+            rAmount = result[0].amount-gAmount;
+            rVol = result[0].volunteers-gVol;
+
+            let donorInput = {
+                amount: rAmount,
+                volunteers: rVol
+            };
+
+            let notify = {
+                sender: users.username,
+                reciever: result[0].username,
+                requestid: rID,
+                completed: 0,
+                message: req.body.message
+            };
+
+            if(rAmount <= 0 && rVol <= 0){
+                user.deleteRequest(rID)
+                user.createNotification(notify, function(result) {
+                });
+                notify.completed = 1;
+                user.createNotification(notify, function(result) {
+                });
+            }else if(rAmount <= 0){
+                user.createNotification(notify, function(result) {
+                });
+                user.updateRequest(0, rVol, rID, function(result) {
+
+                });
+            }else if(rVol <= 0){
+                user.createNotification(notify, function(result) {
+                });
+                user.updateRequest(rAmount, 0, rID, function(result) {
+                });
+            }else{
+                user.createNotification(notify, function(result) {
+                });
+                user.updateRequest(rAmount, rVol, rID, function(result) {
+
+                });
+            }
+
+        });
+    }
+    res.redirect('/donationSent');
+});
+
 // Post register data
 router.post('/register', (req, res, next) => {
     // prepare an object containing all user inputs.
@@ -252,15 +367,15 @@ router.post('/requested', (req, res, next) => {
             message: req.body.message
         };
     
-    console.log(users.username)
+
     // call create function. to create a new user. if there is no error this function will return it's id.
     user.createRequest(userInput, function(lastId) {
         // if the creation of the user goes well we should get an integer (id of the inserted user)
-        console.log(lastId)
+
         if(lastId) {
             // Get the user data by it's id. and store it in a session.
             user.find(lastId, function(result) {
-                req.session.user = result;
+                req.session.user = users;
                 req.session.opp = 0;
                 res.redirect('/requestSent');
             });

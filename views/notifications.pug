@@ -1,0 +1,29 @@
+extends layout
+
+
+mixin message(opp, name)
+    h1.greeting Notifications
+    
+
+append links 
+    li(style="float: right;")
+        a(href="/loggout") Loggout 
+
+block content
+    .dashboard 
+        .user 
+            +message(opp, name)
+        if messages.length
+            form(method="post" action="/requestDelete")
+                table.listing-table.table-dark.table-striped
+                    each message in messages
+                        tr
+                        if messages.completed == 0
+                            td= "You have recieved a donation from " + message.sender + " with the message '" + message.message + "'."
+                        else
+                            td= "You have recieved a donation from " + message.sender + " with the message '" + message.message + "'."   
+                            tr
+                                td= "You request " + message.requestid + " has been completed."
+        
+        else 
+            p You have no notifications currently

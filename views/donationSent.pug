@@ -1,0 +1,23 @@
+extends layout
+
+mixin message(opp, name)
+    if(opp)
+        h1.greeting Your donation has been sent.
+    else 
+        h1.greeting Your donation has been sent.
+
+append links 
+    li(style="float: right;")
+        a(href="/logout") Loggout 
+    
+block content
+    .dashboard 
+        .user 
+            +message(opp, name)
+
+    form(method="post" action="/donationSent")
+        table 
+            tr 
+                td
+                td
+                    input(type="submit" value="OK")
